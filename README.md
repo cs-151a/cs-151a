@@ -10,7 +10,7 @@ Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/main/stocks.i
 * To assist in the time-series analysis mentioned in Step 1, we will put each company's data in sequential order based on 'Date' data.
 
 **3. Handle duplicate data**
-* Since duplicates are unnecessary and could potentially harm the effectiveness of our model, we will remove any duplicate rows for the same 'Date' data.
+* If for some reason a company has multiple data entries for the same date in the 'Date' column, we will remove any extraneous entries because they are not necessary for training the model.
 
 **4. Encode categorical data**
 * We cannot build our model on non-numerical data values, so will need to encode any such instances in our dataset. Particularly, the 'Company' column contains strings for each company's stock symbol, so we will use one-hot encoding to convert them to numerical data.
