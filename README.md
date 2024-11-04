@@ -4,16 +4,16 @@ Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/main/stocks.i
 
 ### Dataset Preprocessing:
 **1. Change format of 'Date' column**
-* The current 'Date' column is in object format (ex. 2018-11-29). This is not ideal for the time-series analysis we wish to perform on the data. So, we will convert to a datetime format, allowing for more convenient month and year extraction as well as time-based indexing.
+* The current 'Date' column is in object format (ex. 2018-11-29 00:00:00-05:00). This is not ideal for the time-series analysis we wish to perform on the data. So, we will convert to a datetime format, allowing for more convenient month and year extraction as well as time-based indexing. Additionally, we will drop the time from this column entirely, as we simply need the date and year for each company's stock entries.
 
 **2. Sort each company's data by Date**
-* To assist in the time-series analysis mentioned in Step 1, we will put each company's data in sequential order based on 'Date' data.
+* To assist in the time-series analysis mentioned in Step 1, we will put each company's data in sequential order based on 'Date' data. Since we have 5 years worth of data, as well as data for each day the market is open, sorting each company's data sequentially will be crucial in keeping or dataset organized and efficiently readable.
 
 **3. Handle duplicate data**
-* If for some reason a company has multiple data entries for the same date in the 'Date' column, we will remove any extraneous entries because they are not necessary for training the model.
+* If for some reason a company has multiple data entries for the same date in the 'Date' column, we will remove any extraneous entries because they are not necessary for training the model. On top of that, the model can become confused if it encounters multiple entries for the same date, so we need to make sure each date contains a single unique data entry.
 
 **4. Encode categorical data**
-* We cannot build our model on non-numerical data values, so will need to encode any such instances in our dataset. Particularly, the 'Company' column contains strings for each company's stock symbol, so we will use one-hot encoding to convert them to numerical data.
+* We cannot build our model on non-numerical data values, so will need to encode any such instances in our dataset. Particularly, the 'Company' column contains strings for each company's stock symbol, so we will use one-hot encoding to convert them to numerical data. For instance, consider the company symbols 'AAPL', 'MSFT', and 'TSLA'; by one-hot encoding these values, we would make three new columns ('Company_AAPL', 'Company_MSFT', 'Company_TSLA'), and for each row in that column we will set the value to 0 if the stock is not associated with that column's company, or 1 if it is.
 
 **5. Drop unnecessary columns**
-* We can drop the 'Dividends' and 'Stock Splits' columns because these data are not necessary in building our model. Dropping them will reduce potential confusion and better streamline the process of training our model.
+* We can drop the 'Dividends' and 'Stock Splits' columns because these data are not necessary in building our model. This is due to the fact that our model will be focused on calculating predicted risk-adjusted return, sharpe ratios, as well as volatility, none of which require dividens or stock splits to calculate. Not only that, but it's not fair to consider these data columns in training our model because there exist companies that don't partake in dividends or stock splits despite generating lots of returns. Thus, dropping them will reduce potential confusion and better streamline the process of training our model. 
