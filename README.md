@@ -2,7 +2,7 @@
 
 Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/main/stocks.ipynb](https://github.com/cs-151a/cs-151a/blob/main/stocks.ipynb)
 
-### Dataset Preprocessing:
+### Milestone 2 - Explanation of Dataset Preprocessing:
 **1. Change format of 'Date' column**
 * The current 'Date' column is in object format (ex. 2018-11-29 00:00:00-05:00). This is not ideal for the time-series analysis we wish to perform on the data. So, we will convert to a datetime format, allowing for more convenient month and year extraction as well as time-based indexing. Additionally, we will drop the time from this column entirely, as we simply need the date and year for each company's stock entries.
 
@@ -20,3 +20,11 @@ Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/main/stocks.i
 
 **6. Predicted Risk-Adjusted Return**
 * Calculates and ranks the performance of stocks based on their risk-adjusted return. It begins by converting the Date column to a datetime format and sorting the data by Company and Date. Using grouped calculations for each company, it computes daily returns, annualized return (mean of daily returns scaled to a year), annualized volatility (standard deviation of daily returns scaled to a year), and the risk-adjusted return (annualized return divided by annualized volatility). These metrics are compiled into a results DataFrame. The results are then ranked by Risk-Adjusted Return in descending order, with a Rank column added for clarity. The output shows which stocks offer the best return relative to risk.
+
+### Milestone 3 - Dataset Preprocessing Step:
+
+**1. Where does your model fit in the fitting graph?**
+* The current model we're using is a RandomForestRegressor. This model functions by taking the average of multiple decision trees in order to reduce variance. This generally helps to reduce overfitting while still being able to captue complicated data patterns. To evaluate where the model fits in the fitting graph, we must compare the actual vs. predicted values, as are graphed in the evaluation of our model. If the model is performing well, most points will be close to the diagonal line, where predicted values match the actual values. A large concentration of points near this line suggests that the model is making accurate predictions and fits the data well. In our case, the actual vs. predicted values appear close to the diagonal, indicating that the model performs well, with a good balance of accuracy and generalization. This shows that the RandomForestRegressor fits well in the fitting graph, as it is effectively capturing the underlying patterns without significant overfitting or underfitting.
+
+**2. What are the next models you are thinking of and why?**
+* It's clear that our current MSE and MAE values are very low (0.000 and 0.0030, respectively). Given these two statistics alone, we can conclude that our model is making strong, accurate predictions for the most part. Accordingly, it's not entirely necessary to evaluate different models because it seems we have already hit the sweet spot. However, other statistics we gathered may lead us use different models that can perform similarly with less complexity. For example, our R^2 value is very high (0.9167), which means that the model is able to account for most of the variance in the target variable of the model. This means that we could possibly produce similar predictions by way of a Linear Regression model, while also giving us more interpretability of the model results. Not only that, but we can also utilize a Support Vector Regression model in order to capture possible non-linear relationships between our stock price prediction. This would be a little more complex however, as this type of model works best on smaller datasets, requiring us to further preprocess data into smaller, select stock groups.
