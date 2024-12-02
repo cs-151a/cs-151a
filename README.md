@@ -51,6 +51,6 @@ All our new work and updates that we have made for Milestone 3 can be found in o
 * We can enhance the model's performance by incorporating a broader range of features. For example, we could use momentum indicators or other technical indicators specific to stock trading such as relative strength index (RSI) in order to capture additional predictive signals. We can also improve our approach to the time-series nature of our stock data by introducing time-sensitive cross-validation mechanisms, like sliding window cross-validation. Additionally, tweaking certain regularization parameters such as alpha and lambda could mitigate overfitting of data in the model. Finally, similar to our previous model, implementing rigorous backtesting protocols to simulate real-world trading scenarios would ensure the model's applicability in a practical situation.
 
 **5. Provide predictions of correct and FP and FN from your test dataset:**
-* Correct:
-* FP:
-* FN:
+* Correct Predictions: 266
+* False Positives: 0
+* False Negatives: 225
