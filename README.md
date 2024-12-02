@@ -1,6 +1,6 @@
 # CSE-151A
 
-Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/main/stocks.ipynb](https://github.com/cs-151a/cs-151a/blob/main/stocks.ipynb)
+Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/Milestone4/stocks.ipynb](https://github.com/cs-151a/cs-151a/blob/Milestone4/stocks.ipynb)
 
 ### Milestone 2 - Explanation of Dataset Preprocessing:
 **1. Change format of 'Date' column**
