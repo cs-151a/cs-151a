@@ -1,56 +1,164 @@
-# CSE-151A
+# CSE-151A Group Project - Milestone 5: Final Report
 
 Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/Milestone4/stocks.ipynb](https://github.com/cs-151a/cs-151a/blob/Milestone4/stocks.ipynb)
 
-### Milestone 2 - Explanation of Dataset Preprocessing:
-**1. Change format of 'Date' column**
-* The current 'Date' column is in object format (ex. 2018-11-29 00:00:00-05:00). This is not ideal for the time-series analysis we wish to perform on the data. So, we will convert to a datetime format, allowing for more convenient month and year extraction as well as time-based indexing. Additionally, we will drop the time from this column entirely, as we simply need the date and year for each company's stock entries.
+## Introduction
 
-**2. Sort each company's data by Date**
-* To assist in the time-series analysis mentioned in Step 1, we will put each company's data in sequential order based on 'Date' data. Since we have 5 years worth of data, as well as data for each day the market is open, sorting each company's data sequentially will be crucial in keeping our dataset organized and efficiently readable.
+For our project, we chose the S&P 500 as our dataset. The reason being is because it is one of the most important market benchmarks representing the largest US companies. We knew that it had extensive data available making it the ideal dataset to train models. The data is high quality and reliable compared to regular stocks which may contain gaps in the data or irregularities. In addition, the index is less volatile than individual stocks, making it easier to model. 
 
-**3. Handle duplicate data**
-* If for some reason a company has multiple data entries for the same date in the 'Date' column, we will remove any extraneous entries because they are not necessary for training the model. On top of that, the model can become confused if it encounters more than or less than 491 entries for the same date, so we need to make sure each date contains solely 491 entries as we have exactly 491 ticker symbols.
+Now you may ask why this is cool. It is because it can help us track money and how we can add more money to our pockets. It is highly liquid and widely traded making any insights we receive highly applicable. On top of that by picking this dataset we get the “wisdom of the crowd” effect. Instead of focusing on a single company, we can capture the collective performance of the strongest corporate entities in the United States. These companies represent about 80% of the available market capitalization in the U.S. stock market. 
 
-**4. Encode categorical data**
-* We cannot build our model on non-numerical data values, so we will need to encode any such instances in our dataset. Particularly, the 'Company' column contains strings for each company's stock symbol, so we will use one-hot encoding to convert them to numerical data. For instance, consider the company symbols 'AAPL', 'MSFT', and 'TSLA'. By one-hot encoding these values, we would make a row with three new columns similar to this: ('Company_AAPL', 'Company_MSFT', 'Company_TSLA'). However, they will be filled with zeros, and only a singular one to represent a specific company. For instance, AAPL would be (1, 0, 0) whereas TSLA would be (0, 0, 1) in our sample case. 
+There is strong real-world impact and accessibility. Most people’s retirement is based on the 401ks that they receive which are heavily based on the S&P 500 funds. It’s the most common fund for benchmark performance. It represents rich data properties. The data can show interesting patterns both within the long term and the short term. It captures broader economic cycles and market sentiment, contains both rational price movements and emotional/behavioral aspects and has survived major historical events (crashes, recoveries, tech bubbles, financial crises). In essence, we can say that it is cool because we are not just modeling stocks. We are looking at the measure of American economic health that millions of people rely on for their economic well being. 
 
-**5. Drop unnecessary columns**
-* We can drop the 'Dividends' and 'Stock Splits' columns because these data are not necessary in building our model. This is due to the fact that our model will be focused on calculating predicted risk-adjusted return, sharpe ratios, as well as volatility, none of which require dividens or stock splits to calculate. Not only that, but it's not fair to consider these data columns in training our model because there exist companies that don't partake in dividends or stock splits despite generating lots of returns. Thus, dropping them will reduce potential confusion and better streamline the process of training our model. 
+The models we chose for our project were the random forest regression model and the XGBoost model. When it comes to the random forest regression model, it serves as a good baseline model with reliable results. It handles non-linear relationships between the features and stock movements. Furthermore, it provides feature importance scores and also allows us to easily visualize the contribution of our various features. Finally, this model is relatively efficient computationally which was an added bonus.
 
-**6. Predicted Risk-Adjusted Return**
-* Calculates and ranks the performance of stocks based on their risk-adjusted return. It begins by converting the Date column to a datetime format and sorting the data by Company and Date. Using grouped calculations for each company, it computes daily returns, annualized return (mean of daily returns scaled to a year), annualized volatility (standard deviation of daily returns scaled to a year), and the risk-adjusted return (annualized return divided by annualized volatility). These metrics are compiled into a results DataFrame. The results are then ranked by Risk-Adjusted Return in descending order, with a Rank column added for clarity. The output shows which stocks offer the best return relative to risk.
+Our second model was the XGBoost model. This was our more in depth model as it can capture non-linear relationships that the Linear Regression model might miss. It does a great job in handling complex interactions between features while generally providing better predictive performances compared to the Linear Regression model. It contains built-in feature importance metrics to understand what drives predictions. Due to these abilities, it is resistant to overfitting through regularization. 
 
-### Milestone 3 - Dataset Preprocessing Step:
-All our new work and updates that we have made for Milestone 3 can be found in our Jupyter Notebook (See link above). We finished preprocessing, introduced three new features (Risk-adjusted return, Sharpe Ratio, and Volatility), and trained and evaluated our very first model to comply with the instructions given. 
+These models help us go further with the S&P 500. Having a good predictive model has a broader impact that is quite significant. Using good models like ours, investors can better understand the risks of the market and identify new opportunities. Portfolio managers can improve their strategies with hedge funds. It can help the regular person comprehend which factors most influence market movements. In addition, it can be used to develop new trading strategies as well as risk management systems. In reality, it can help us innovate our trading strategies and help provide insights into the overall market behavior and the economic health of the United States of America.
 
-**1. Where does your model fit in the fitting graph?**
-* The current model we're using is a RandomForestRegressor. This model functions by taking the average of multiple decision trees in order to reduce variance. This generally helps to reduce overfitting while still being able to captue complicated data patterns. To evaluate where the model fits in the fitting graph, we must compare the actual vs. predicted values, as are graphed in the evaluation of our model. If the model is performing well, most points will be close to the diagonal line, where predicted values match the actual values. A large concentration of points near this line suggests that the model is making accurate predictions and fits the data well. In our case, the actual vs. predicted values appear close to the diagonal, indicating that the model performs well, with a good balance of accuracy and generalization. This shows that the RandomForestRegressor fits well in the fitting graph, as it is effectively capturing the underlying patterns without significant overfitting or underfitting.
+## Methods
+(All relevant code can be found in our notebook, linked above)
 
-**2. What are the next models you are thinking of and why?**
-* It's clear that our current MSE and MAE values are very low (0.000 and 0.0030, respectively). Given these two statistics alone, we can conclude that our model is making strong, accurate predictions for the most part. Accordingly, it's not entirely necessary to evaluate different models because it seems we have already hit the sweet spot. However, other statistics we gathered may lead us use different models that can perform similarly with less complexity. For example, our R^2 value is very high (0.9167), which means that the model is able to account for most of the variance in the target variable of the model. This means that we could possibly produce similar predictions by way of a Linear Regression model, while also giving us more interpretability of the model results. Not only that, but we can also utilize a Support Vector Regression model in order to capture possible non-linear relationships between our stock price prediction. This would be a little more complex however, as this type of model works best on smaller datasets, requiring us to further preprocess data into smaller, select stock groups.
+### Data Exploration
 
-**3. What is the conclusion of your 1st model?**
-* Our first model demonstrated promising predictive capabilities with a high R-squared value of 0.9463 and minimal mean squared error in stock performance forecasting. However this level of accuracy raises concerns about potential overfitting in our model. While implementing additional features like volume trends provided supplementary data points, we realize these may have introduced unnecessary noise into our core metrics. Our weighting methodology, particularly in the 50/30/20 feature split implementation, lacked the mathematical rigor typically expected in quantitative finance models.
+The dataset consisted of 602,962 rows and 9 columns, which included the following features:
+- **Data** (object)
+- **Open** (float64)
+- **High** (float64)
+- **Low** (float64)
+- **Close** (float64)
+- **Volume** (int64)
+- **Dividends** (float64)
+- **Stock Splits** (float64)
+- **Company** (object)
 
-**4. What can be done to possibly improve it?**
-* We can improve our model's performance with the following. Implementing proper feature-level weight distribution, introducing cross-validation mechanisms to address overfitting concerns, and integrating more sophisticated risk metrics for robust performance evaluation. Also expanding our dataset to incorporate longer time series data and relevant macroeconomic indicators would enhance our model's predictive capabilities. We could also implement more rigorous backtesting protocols and consider tiny market effects to better simulate real world trading conditions. These optimizations can be implemented in our model's later iterations to demonstrate significant improvements in the performance.
+The first five rows of the dataset were previewed for context. Additionally, a statistical summary of the numerical columns was generated, which highlighted significant variability in key financial metrics.
+## INSERT IMAGE HERE
 
-### Milestone 4 - Second Model:
+The dataset contained 491 unique companies, each identified by a ticker symbol (e.g., AAPL, MSFT, GOOGL, AMZN). Missing value checks confirmed that the dataset was complete with no missing values.
 
-**1. Where does your model fit in the fitting graph?**
-* The current model that we're using is XGBoost. This model functions by building multiple sequential decision trees, with each new tree correcting the errors of the previous ones. It accomplishes this by way of gradient boosting, which adds trees in order to minimize errors, as well as regularizes features in order to prevent possible overfitting. Though XGBoost is efficient and highly scalable, it is also more complex when compared to other common ML models, including our previous model (RandomForestRegressor). Additionally, while XGBoost models are not very likely to underfit data, they are certainly more susceptible to ovefitting if not properly tuned. In terms of the fitting graph, we'd place our XGBoost model towards the right side of the X-axis because, as explained previously, it's quite complex due to its ability to manipulate multiple decision trees in modeling relationships both linear or non-linear. Additionally, if XGBoost overfits data, its error increases and follows a curve similar to the green curve in the fitting graph. However, as also touched on before, proper tuning will help bring this error down. In fitting our model, we mainly utilized grid search with cross-validation in order to tune our hyperparameters, but implementing early stopping, regularizing data, and pruning can all assist in properly tuning an XGBoost model, eventually shifting it into the ideal range with sufficient performance on both training and test sets.
+Several visualization techniques were employed to understand data distribution and relationships (figures for each are available in the “Results” section):
 
-**2. What are the next models you are thinking of and why?**
-* Just like our previous model, RandomForestRegressor, our current model, XGBoost, had an extremely low MSE value (0.000020). Thus, we can conclue that our model is, again, make strong, accurate predictions, and that building another model might not be necessary. However, we're considering the possibility of building our predictor using a neural network model because we've read that these models are good at making time-series predictions, which would apply directly to our goal of modeling sequential stock market data. Not only that, but the natural complexity of a neural network model would be effective in capturing the non-linear relationships present in the stock market dataset we're using, just like the XGBoost model was. Additionally, deep learning neural network models are capable of automatically learning feature respresentations from raw data. This means that instead of engineering our features manually, our model could automatically read the dataset to do this process by itself. A limiting factor in using a neural network, however, would be its complex interpretability. So, though it wouldn't be impossile to interpret the model's predictions, it would just take more time. Overall, we are certainly interested in exploring the possibilities of leveraging a neural network model on our data. Though our current models work just fine, it would be interesting to see how predictions from a neural network differ from our current predicions, if at all.
+- A correlation heatmap was generated to identify linear relationships between numeric columns
+- A pair plot was used to visualize relationships between features
+- Distribution plots were created for individual numeric columns to analyze the spread and potential skewness
+  
+The exploration step provided insights into the dataset's structure and statistical patterns, setting the stage for further preprocessing and modeling
 
-**3. What is the conclusion of your 2nd model?**
-* Our XGBoost-based model demonstrated strong predictive capabilities. On the training set, it achieved an R-squared value of 0.9932 and a mean squared error of 0.000002, and on the testing set, it achieved an R-squared value of 0.9389 and a mean squared error of 0.000020. To achieve this high performance, we utilized precise feature engineering, including risk-adjusted returns, Sharpe ratio components, and volatility metrics. On top of that, hyperparameter tuning through GridSearchCV optimized the model's configuration, and normalized predictions allowed effective ranking of stocks. However, the model's reliance on dominant features like the Sharpe ratio and volatility, along with its use of standard random splits for cross-validation, were certainly areas for improvement.
+### Preprocessing
 
-**4. What can be done to possibly improve it?**
-* We can enhance the model's performance by incorporating a broader range of features. For example, we could use momentum indicators or other technical indicators specific to stock trading such as relative strength index (RSI) in order to capture additional predictive signals. We can also improve our approach to the time-series nature of our stock data by introducing time-sensitive cross-validation mechanisms, like sliding window cross-validation. Additionally, tweaking certain regularization parameters such as alpha and lambda could mitigate overfitting of data in the model. Finally, similar to our previous model, implementing rigorous backtesting protocols to simulate real-world trading scenarios would ensure the model's applicability in a practical situation.
+We took the following steps to preprocess our data for further modeling:
 
-**5. Provide predictions of correct and FP and FN from your test dataset:**
-* Correct Predictions: 266
-* False Positives: 0
-* False Negatives: 225
+- **Dropped null and duplicate rows**
+  - Any rows containing null values were removed to ensure data completeness
+  - Any duplicate rows were dropped to eliminate redundant data
+
+- **Removed irrelevant columns**
+  - The "Dividends" and "Stock Splits" columns were dropped as they did not contribute to the analysis
+
+- **Date conversion**
+  - The "Date" column was converted from strings to datetime objects using Pandas’ to_datetime function with UTC specified. This allowed for better date-based calculations and sorting
+
+- **Filtered out companies with insufficient data**
+  - Stocks with less than three years of observations (measured between 2018 and 2024) were removed. Companies were filtered by checking for at least three consecutive years of data in the "Date" column
+
+- **Feature scaling**
+  - The numerical columns ("Open," "High," "Low," "Close," "Volume") were scaled using Min-Max Scaling to normalize values between 0 and 1. This ensured that all features contributed equally to the model
+
+Next, we had to calculate financial metrics, such as returns and volatility, for each stock.
+
+- **Daily Returns** (time-series representation of how each stock’s price changed each day)
+  - Calculated as the percentage change in the “Close” column prices
+  - Grouped by company
+
+- **Annualized Return** (average annual performance of an investment)
+  - Calculated by taking the mean of daily returns for each company and scaling it by 252 (approximate amount of trading days per year)
+
+- **Annualized Volatility** (how much a stock price varies over a year)
+  - Calculated by taking the standard deviation of daily returns, and scaling by 252
+
+- **Risk-Adjusted Return** (measures profit of an investment without considering risk)
+  - Calculated by dividing the annualized return by the annualized volatility
+
+Finally, we used each of these financial metrics to calculate Sharpe Ratio for the dataset, a more comprehensive risk-adjusted metric:
+
+- **Sharpe Ratio** (compares the return of an investment with its risk)
+  - Calculated by dividing the annualized excess return by the annualized volatility
+
+Ultimately, the preprocessing steps prepared the dataset by cleaning, scaling, and enriching it with essential financial metrics, such as daily returns, annualized returns, volatility, and Sharpe ratios. These transformations ensured that the data was both accurate and suitable for subsequent machine learning models.
+
+### Model 1
+
+#### Model Overview
+
+The first model implemented was a Random Forest Regressor, chosen for its ability to handle non-linear relationships and provide feature importance scores.
+
+#### Model Architecture
+
+The Random Forest Regressor was configured with the following hyperparameters:
+
+- n_estimators: 100
+- max_depth: 10
+- min_samples_split: 5
+  
+#### Data Preparation
+
+- **Feature Selection**
+  - The following weighted features were generated based on their importance to the target prediction:
+    - Weighted_Risk_Adjusted_Return: 0.5
+    - Weighted_Sharpe: 0.3
+    - Weighted_Volatility: 0.2
+    
+- **Target Variable**
+  - The target variable, Future_Return, was calculated as the mean future return over a 30-day period
+  - Missing values in the target variable were filled using the median
+  
+- **Feature Scaling**
+  - Features were scaled using a RobustScaler to handle outliers and ensure numerical stability
+  
+#### Training and Testing
+
+- The dataset was split into training and testing sets using an 80:20 ratio with train_test_split
+- The Random Forest Regressor was trained on the scaled features from the training set, and predictions were made on the testing set
+
+### Model 2
+
+#### Model Overview
+
+The second model implemented was an XGBoost Regressor. This ensemble learning method was chosen for its efficiency in handling complex datasets and its ability to model non-linear relationships effectively.
+
+#### Model Architecture
+
+The XGBoost model was trained with the following hyperparameters:
+- n_estimators: 200
+- learning_rate: 0.1
+- max_depth: 6
+- min_child_weight: 1
+- subsample: 0.8
+- colsample_bytree: 0.8
+- gamma: 0
+  
+These parameters were initially set before hyperparameter tuning, which is discussed later.
+
+#### Data Preparation
+
+- **Data Splitting**
+  - The dataset was split into training (80%) and test (20%) subsets
+    
+- **Feature Scaling**
+  - The data was scaled using the RobustScaler to mitigate the impact of outliers
+    
+#### Training and Testing
+
+The model was trained using the following approach:
+
+- **Cross-Validation**
+  - Five-fold cross-validation was performed to assess the stability and robustness of the model
+ 
+- **Model Fit**
+  - The model was trained on the scaled training data and evaluated on the test set
+    
+#### Tuning and Hyperparameter Optimization
+
+To optimize the model’s performance, a Grid Search approach was implemented. This method was used to find the optimal set of hyperparameters for the model, which will be discussed in the “Results” section for Model 2.
+
