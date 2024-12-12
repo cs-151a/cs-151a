@@ -254,7 +254,7 @@ The Random Forest Regressor was evaluated on the testing set, yielding the follo
 - **Explained Variance Score**: 0.96126630
   
 These results indicate that the model achieved high accuracy and explained over 96% of the variance in the target variable.
-![predicted_vs_actual_1](predicted_vs_actual_1.png)
+![residuals](residuals.png)
 
 #### Feature Importance
 
@@ -295,7 +295,7 @@ The classification model performance metrics at a threshold of **0.0198** are as
 - **Accuracy**: 92.78%
   
 This reflects robust performance in identifying stocks with strong potential while minimizing misclassifications.
-![residuals](residuals.png)
+![predicted_vs_actual_2](predicted_vs_actual_2.png)
 
 #### Stock Rankings
 
@@ -347,7 +347,7 @@ The XGBoost Regressor was evaluated on the test set, yielding the following metr
 - **R-squared (R²)**: 0.95140264
 
 These results indicate that the model achieved high accuracy and explained over 95% of the variance in the target variable.
-![predicted_vs_actual_2](predicted_vs_actual_2.png)
+![residuals2](residuals2.png)
 
 #### Feature Importance
 
@@ -439,7 +439,7 @@ At a threshold of **0.0192**, the model's classification performance was:
 - **Correct Predictions**: 466
 
 The classification results reflect the model’s ability to correctly identify positive predictions while minimizing false positives.
-![residuals2](residuals2.png)
+![predicted_vs_actual_1](predicted_vs_actual_1.png)
 
 #### Summary of Key Findings
 
