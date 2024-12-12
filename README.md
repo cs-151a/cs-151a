@@ -1,6 +1,6 @@
 # CSE-151A Group Project - Milestone 5: Final Report
 
-Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/Milestone4/stocks.ipynb](https://github.com/cs-151a/cs-151a/blob/Milestone4/stocks.ipynb)
+Link to Jupyter Notebook: [https://github.com/cs-151a/cs-151a/blob/Milestone5/stocks.ipynb](https://github.com/cs-151a/cs-151a/blob/Milestone5/stocks.ipynb)
 
 ## Introduction
 
@@ -186,10 +186,10 @@ The results of the data exploration are summarized as follows:
 
 - **Visualization Results**
   - The **correlation heatmap** highlighted linear relationships, revealing potential multicollinearity between some features
-![heatmap](heatmap.png)
+![heatmap](heatmap_1.png)
 
   - The **pair plot** provided insights into feature interactions and trends between variables
-![pairplot](pairplot.png)
+![pairplot](pairplot_1.png)
 
   - **Distribution plots** showed the spread and skewness of numeric features, informing later preprocessing steps
 ![open](open.png)
@@ -451,10 +451,53 @@ The classification results reflect the model’s ability to correctly identify p
 These results offer valuable insights for investment decision-making based on the model's outputs.
 
 ## Discussion
-# NOT DONE YET
+
+### Data Exploration 
+
+Our choice to use the S&P 500 dataset was both an advantage and a limitation. The quality of our dataset was excellent which was why we chose it. There were no missing values, allowing us to avoid common data quality issues. However, our dataset gave us a somewhat idealized view of market behavior, as real-world trading often involves dealing with incomplete or inconsistent data.
+The presence of 491 unique companies provided a robust sample size, but it's worth noting that this represents a specific subset of the global economic market. These companies in particular are large, successful, and well-established. This selection bias means our models might not generalize well to smaller or emerging companies. Additionally, while having 602,962 rows of data suggests comprehensive coverage, it also presents challenges in terms of computational efficiency and the risk of overfitting.
+The correlation heatmap revealed strong relationships between certain financial metrics, particularly between Open, High, Low, and Close prices. While these correlations were expected, they raised concerns about multicollinearity in our modeling approach. We could have potentially simplified our feature set by selecting fewer price indicators without significantly losing predictive power.
+Our distribution plots showed significant skewness in several features, particularly in Volume. In retrospect, we could have applied more sophisticated transformation techniques beyond simple scaling to address these distributional issues. The presence of extreme outliers, especially in Volume data, might have negatively influenced our models despite our scaling efforts.
+
+### Preprocessing
+
+For preprocessing of our data, we made cautious choices to comb through our data and ensure that it was in the best state prior to training our models. The decision to remove stocks with less than three years of financial data helped ensure stability in our analysis but potentially eliminated emerging companies that might have shown interesting patterns or opportunities such as KVUE, a Johnson & Johnson spinoff with over $15 billion in revenue.
+We used a plethora of calculated financial metrics that followed industry trends. Many financial firms and traders use risk-adjusted return, annualized volatility, and Sharpe ratio as they ponder over their next financial moves, and we took inspiration from that. However, our approach to annualization using an average of 252 trading days might be an oversimplification. Market conditions can vary significantly year by year, and a more dynamic approach to annualization might have better captured these variations.
+The use of Min-Max scaling for numerical features was effective for standardization but potentially sensitive to outliers. A more robust scaling approach, such as Winsorization followed by standardization, might have better handled extreme values while preserving important market signals.
+Our approach to calculating the Sharpe Ratio used a simplified risk-free rate assumption. In practice, the risk-free rate varies over time, and incorporating a dynamic risk-free rate might have provided more accurate risk-adjusted return calculations.
+
+### Model 1
+
+The Random Forest model's impressive R-squared value of 0.96 raises some concerns about potential overfitting, despite cross-validation efforts. 
+The dominance of Weighted_Sharpe (71.9% importance) in feature importance suggests our model might be overly reliant on this metric. While the Sharpe ratio is indeed a valuable indicator, such heavy dependence on a single feature could make the model vulnerable to market conditions where this metric becomes less reliable.
+The classification accuracy of 92.78% is remarkably high, perhaps a little too high for financial market prediction. This could indicate a variety of possibilities such as possible data leakage, overfitting to historical patterns, or insufficient testing on out-of-sample data.
+The model's hyperparameters (100 trees, max_depth of 10) might have been too simplistic. A more thorough hyperparameter optimization process, perhaps using Bayesian optimization, could have yielded more robust results.
+
+### Model 2
+
+The XGBoost model also yielded high performance metrics, albeit with some interesting differences in feature importance distribution. The more balanced distribution of importance across different Sharpe Ratio categories (low, medium, high) suggests a more nuanced capture of market conditions.
+However, several critical points must be addressed.
+The model's heavy reliance on Sharpe Ratio variations (combined 87.15% importance) suggests potential redundancy. We might have created features that were too similar, leading to artificial performance improvements.
+The cross-validation scores showed some variance (ranging from 0.8912 to 0.9417), indicating that model performance might be sensitive to the specific time periods used for training and testing. This volatility in performance metrics suggests that the model might not be as robust as the aggregate metrics indicate. The classification results, while strong, might be optimistic due to the use of a basic threshold (0.0192) for classification, possible look-ahead bias in feature construction, and lastly limited testing across different market conditions
+
+Both models show strong performance metrics but might be too optimistic for real-world application. The high accuracy rates suggest that either we've discovered an unusually effective approach to market prediction (unlikely), or there are hidden biases/limitations in our methodology that warrant further investigation (more likely).
+Future improvements could include: incorporating macroeconomic indicators, testing model performance across different market regimes, implementing more sophisticated feature selection methods, adding regularization techniques to combat overfitting, and testing with more recent, out-of-sample data to verify generalization
+While both models show promising results, their very high performance metrics suggest we should approach these results with healthy skepticism. The real test would be their performance in live market conditions, particularly during periods of market stress or regime changes not represented in our training data.
+
 
 ## Conclusion
-# NOT DONE YET
+
+Wrapping things up, our analysis of the S&P 500 index using advanced machine learning technologies, particularly Random Forest and XGBoost, attests to the immense possibilities lying in the data-centric approach to trading and investment. An index that is so widely followed and deeply analyzed lends a certain robustness, generality, and application to our modeling attempts compared to individual stock picks. The preprocessing we did, cleaning and normalization of data, plus computations reporting sophisticated quality metrics helped ensure that the inputs into our models were acceptable and reliable.
+
+However, despite these encouraging results, there is a need for caution and reflection. Achieving consistently high R² values greater than 0.90 in finance is an act one needs to tread on cautiously, our method may be capturing patterns others would deem too good to be true in the real world. The high values indicate possible problems such as overfitting, the need for stricter validation procedures, or the necessity to employ out-of-sample and out-of-time tests.
+
+The richness of features that work can be furthered with macroeconomic indicators such as interest rates, unemployment data, and GDP growth, as well as other alternative data sources such as news sentiment, social media trends, and insider trading activities, instead of focusing solely on sector signals. We might also investigate many diverse modeling techniques in the future, such as neural networks, convolutional methods for time series data, or even fiscal ensemble strategies, which combine the best of several algorithms. Bayesian optimization or other algorithms for hyperparameter tuning can push performance slightly higher while working to mitigate overfitting.
+
+Moreover, we would have to consider more complex evaluation strategies. A combination of rigorous regression metrics, rolling windows, walk-forward validation, and true out-of-time test splitting would provide a more realistic sense of how these models would operate in the actual markets. This would build confidence in the result and lend itself more credibility in front of traders and portfolio managers. We would also note that the selection of metrics and methods can determine the success of such models. The Sharpe ratio, as we noted, stood out as one of the few parameters with sound predictive power for risk-adjusted returns. If we had to do it over again, we might investigate other advanced financial metrics—such as the Sortino ratio, Calmar ratio, and drawdown analysis—to obtain a more holistic view of market drivers. Incorporating transaction costs, liquidity constraints, and execution drags would enhance realistic trading action.
+
+Real-life implications cannot be overestimated. Historically, successful quantitative strategies have empowered firms like Citadel and other leading hedge funds to make gigantic profits that dwarfed those based on human intuition. The very real application of AI and ML in trading is not just about reaching a new echelon of financial innovation but gaining a deep understanding of the cruel reality of today’s markets. As the algorithms grow in sophistication, incorporating machine-learned aid into investment decision-making will soon become an everyday norm rather than an indulgence of those within the top-tier institutions. When applied appropriately, such mechanisms have the capability to help investors of all sizes maneuver through complexity, locate unseen opportunities, and manage risk more effectively.
+
+In essence, the study shows that we have made commendable headway toward building robust models, yet the road ahead remains open to vast growth and exploration. Future efforts will probably involve deeper data, selective features, improved validation methods, and the application of pioneering algorithms. If we were to further invest our time and resources into these models, we can gain new information regarding the status of today’s market. And if deployed wisely, these models might endow the very advantage needed to cruise through the tumultuous environment of modern finance—the same way Citadel has displayed to the world that it is indeed possible.
 
 ## Statement of Collaboration
 
