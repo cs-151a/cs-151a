@@ -33,7 +33,7 @@ The dataset consisted of 602,962 rows and 9 columns, which included the followin
 - **Company** (object)
 
 The first five rows of the dataset were previewed for context. Additionally, a statistical summary of the numerical columns was generated, which highlighted significant variability in key financial metrics.
-## INSERT IMAGE HERE
+![dataset_1](dataset_1.png)
 
 The dataset contained 491 unique companies, each identified by a ticker symbol (e.g., AAPL, MSFT, GOOGL, AMZN). Missing value checks confirmed that the dataset was complete with no missing values.
 
@@ -175,24 +175,30 @@ The results of the data exploration are summarized as follows:
 
 - **Statistical Summary:**
   - Additionally, the following is a statistical summary of the numerical columns. These statistics demonstrate significant variability in key financial metrics:
-## INSERT IMAGE HERE
+![dataset_2](dataset_2.png)
 
 - **Unique Companies:**
   - The dataset included 491 unique companies, each identified by its ticker symbol (i.e. AAPL, MSFT, GOOGL, AMZN)
 
 - **Missing Values:**
   - Following the statistical summary of our dataset, we checked for missing values. Luckily, our dataset was complete:
-## INSERT IMAGE HERE
+![missing_values](missing_values.png)
 
 - **Visualization Results**
   - The **correlation heatmap** highlighted linear relationships, revealing potential multicollinearity between some features
-## INSERT IMAGE HERE
+![heatmap](heatmap.png)
 
   - The **pair plot** provided insights into feature interactions and trends between variables
-## INSERT IMAGE HERE
+![pairplot](pairplot.png)
 
   - **Distribution plots** showed the spread and skewness of numeric features, informing later preprocessing steps
-## INSERT IMAGE HERE
+![open](open.png)
+![high](high.png)
+![low](low.png)
+![close](close.png)
+![volume](volume.png)
+![dividends](dividends.png)
+![stock_splits](stock_splits.png)
 
 The data exploration process provided us with a comprehensive understanding of the dataset structure, revealed no missing values, and helped identify statistical and visual trends essential for preprocessing and modeling.
 
@@ -208,7 +214,7 @@ The data exploration process provided us with a comprehensive understanding of t
 
 - **Feature Scaling**
   - The numerical columns ("Open," "High," "Low," "Close," "Volume") were scaled using Min-Max Scaling
-## INSERT IMAGE HERE
+![dataset_3](dataset_3.png)
 
 - **Financial Metrics**
   - The following metrics were calculated for each company:
@@ -216,7 +222,7 @@ The data exploration process provided us with a comprehensive understanding of t
     - **Annualized Return:** Average annual performance of each stock
     - **Annualized Volatility:** Standard deviation of daily returns over a year
     - **Risk-Adjusted Return:** Annualized return divided by volatility
-## INSERT IMAGE HERE
+![dataset_4](dataset_4.png)
  
 #### Financial Metrics Results
 
@@ -233,7 +239,7 @@ The data exploration process provided us with a comprehensive understanding of t
 
 - **Sharpe Ratio per Transaction**
   - Each transaction was annotated with the calculated Sharpe Ratio, providing a per-transaction risk-adjusted performance metric.
-## INSERT IMAGE HERE
+![sharpe](sharpe.png)
 
 ### Model 1
 
@@ -248,7 +254,7 @@ The Random Forest Regressor was evaluated on the testing set, yielding the follo
 - **Explained Variance Score**: 0.96126630
   
 These results indicate that the model achieved high accuracy and explained over 96% of the variance in the target variable.
-## INSERT IMAGE HERE
+![predicted_vs_actual_1](predicted_vs_actual_1.png)
 
 #### Feature Importance
 
@@ -287,9 +293,9 @@ The classification model performance metrics at a threshold of **0.0198** are as
 - **False Positives (FP)**: 3
 - **False Negatives (FN)**: 4
 - **Accuracy**: 92.78%
-- 
+  
 This reflects robust performance in identifying stocks with strong potential while minimizing misclassifications.
-##INSERT IMAGE HERE
+![residuals](residuals.png)
 
 #### Stock Rankings
 
@@ -341,7 +347,7 @@ The XGBoost Regressor was evaluated on the test set, yielding the following metr
 - **R-squared (R²)**: 0.95140264
 
 These results indicate that the model achieved high accuracy and explained over 95% of the variance in the target variable.
-##INSERT IMAGE HERE
+![predicted_vs_actual_2](predicted_vs_actual_2.png)
 
 #### Feature Importance
 
@@ -433,7 +439,7 @@ At a threshold of **0.0192**, the model's classification performance was:
 - **Correct Predictions**: 466
 
 The classification results reflect the model’s ability to correctly identify positive predictions while minimizing false positives.
-## INSERT IMAGE HERE
+![residuals2](residuals2.png)
 
 #### Summary of Key Findings
 
